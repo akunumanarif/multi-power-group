@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/multi-power-group/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/multi-power-group/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/multi-power-group",
+  "projects": {
+    "logging-service": {
+      "type": "application",
+      "root": "apps/logging-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/logging-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/logging-service/tsconfig.app.json"
+      }
+    },
+    "multi-power-group": {
+      "type": "application",
+      "root": "apps/multi-power-group",
+      "entryFile": "main",
+      "sourceRoot": "apps/multi-power-group/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/multi-power-group/tsconfig.app.json"
+      }
+    },
+    "order-service": {
+      "type": "application",
+      "root": "apps/order-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/order-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/order-service/tsconfig.app.json"
+      }
+    }
+  }
+}
