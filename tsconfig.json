@@ -21,6 +21,37 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@config/*": [
+        "src/config/*"
+      ],
+      "@kafka/*": [
+        "kafka/*"
+      ],
+      "@logger/*": [
+        "logger/*"
+      ],
+      "@ordersController/*": [
+        "apps/order-service/src/controller/*"
+      ],
+      "@ordersDto/*": [
+        "apps/order-service/src/dto/*"
+      ],
+      "@ordersEntity/*": [
+        "apps/order-service/src/entity/*"
+      ],
+      "@ordersModule/*": [
+        "apps/order-service/src/module/*"
+      ],
+      "@ordersService/*": [
+        "apps/order-service/src/service/*"
+      ],
+      "@root/*": [
+        "./*"
+      ],
+      "@src/*": [
+        "src/*"
+      ]
+    }
   }
 }
