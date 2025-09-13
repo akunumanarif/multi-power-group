@@ -8,7 +8,7 @@ COPY package*.json ./
 COPY nest-cli.json ./
 COPY tsconfig*.json ./
 
-# Install all dependencies for building
+# Install all dependencies for building and testing
 RUN npm ci
 
 # Copy source code
@@ -16,6 +16,10 @@ COPY . .
 
 # Build the specific app
 RUN npm run build order-service
+
+# Stage 1.5: Test (optional, for CI)
+FROM builder AS test
+RUN npm run test -- --runInBand
 
 # Prune dev dependencies
 RUN npm prune --production

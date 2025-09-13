@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConsumerService } from '@notificationService/consumer.service';
 import { AppLogger } from '@logger/logger.service';
+import { ConfigService } from '../src/config/notification.config';
 
 // Mock untuk nodemailer
 jest.mock('nodemailer', () => ({
@@ -25,6 +26,11 @@ describe('ConsumerService', () => {
       providers: [
         ConsumerService,
         { provide: AppLogger, useValue: mockLogger },
+        { provide: ConfigService, useValue: { getEmailConfig: jest.fn(() => ({
+          user: process.env.EMAIL_USER || 'test',
+          pass: process.env.EMAIL_PASS || 'test',
+          client_one: process.env.CLIENT_ONE_EMAIL || 'test@example.com',
+        })) } },
       ],
     }).compile();
 
@@ -51,8 +57,7 @@ describe('ConsumerService', () => {
         expect.any(String)
       );
       expect(mockLogger.log).toHaveBeenCalledWith(
-        expect.stringContaining('Email sent for orderId=ORDER-001'),
-        expect.any(String)
+        expect.stringContaining('Email sent for orderId=ORDER-001')
       );
     });
 
