@@ -251,3 +251,11 @@
     - 95%+ customer satisfaction with notifications
     - Support for 10x current order volume
     - Reduced operational overhead through automation
+
+## 14. Additional content
+
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
+![alt text](image-4.png)
