@@ -8,11 +8,11 @@ services:
       - "3001:3001"
     environment:
       - KAFKA_BROKER=kafka:9092
-      - DB_HOST=postgres  # Ubah ke DB_HOST
-      - DB_PORT=5432      # Ubah ke DB_PORT
-      - DB_USERNAME=postgres  # Ubah ke DB_USERNAME
-      - DB_PASSWORD=postgres  # Ubah ke DB_PASSWORD
-      - DB_DATABASE=order_db  # Ubah ke DB_DATABASE
+      - DB_HOST=postgres  
+      - DB_PORT=5432      
+      - DB_USERNAME=postgres  
+      - DB_PASSWORD=postgres  
+      - DB_DATABASE=order_db  
       - DB_SYNCHRONIZE=true
     depends_on:
       - postgres
@@ -25,20 +25,39 @@ services:
         max-size: "10m"
         max-file: "3"
     volumes:
-      - ./logs:/app/logs    
+      - ./logs:/app/logs
+
+  notification-service:
+    build:
+      dockerfile: apps/notification-service/Dockerfile
+    container_name: mpg-notification-service
+    ports:
+      - "3002:3002"
+    depends_on:
+      - kafka
+    networks:
+      - app-network
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    volumes:
+      - ./logs:/app/logs        
 
   postgres:
     image: postgres:15
     container_name: mpg-postgres
     restart: always
     environment:
-      POSTGRES_USER: postgres      # Pastikan ini ada
-      POSTGRES_PASSWORD: postgres  # Pastikan ini ada  
+      POSTGRES_USER: postgres      
+      POSTGRES_PASSWORD: postgres   
       POSTGRES_DB: order_db
     ports:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      # - ./docker-entrypoint/init-notification-db.sh:/docker-entrypoint-initdb.d/init-notification-db.sh
     networks:
       - app-network
 
@@ -48,7 +67,7 @@ services:
     ports:
       - "2181:2181"
     restart: unless-stopped
-    networks:  # Tambahkan network
+    networks:
       - app-network
 
   kafka:
@@ -62,7 +81,7 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,INTERNAL://0.0.0.0:9093  # TAMBAHKAN INI
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,INTERNAL://0.0.0.0:9093
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,INTERNAL://kafka:9093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
@@ -80,7 +99,7 @@ services:
     ports:
       - "9000:9000"
     environment:
-      KAFKA_BROKERCONNECT: kafka:9092  # Ubah ke 9092
+      KAFKA_BROKERCONNECT: kafka:9092 
       # KAFKA_PROPERTIES: "(bootstrap.servers=kafka:9092)"
       # JVM_OPTS: "-Xms32M -Xmx64M -Dkafka.brokerConnect=kafka:9092"
       SERVER_SERVLET_CONTEXTPATH: "/"

@@ -31,6 +31,21 @@
       "@logger/*": [
         "logger/*"
       ],
+      "@notificationController/*": [
+        "apps/notification-service/src/controller/*"
+      ],
+      "@notificationDto/*": [
+        "apps/notification-service/src/dto/*"
+      ],
+      "@notificationEntity/*": [
+        "apps/notification-service/src/entity/*"
+      ],
+      "@notificationModule/*": [
+        "apps/notification-service/src/module/*"
+      ],
+      "@notificationService/*": [
+        "apps/notification-service/src/service/*"
+      ],
       "@ordersController/*": [
         "apps/order-service/src/controller/*"
       ],
