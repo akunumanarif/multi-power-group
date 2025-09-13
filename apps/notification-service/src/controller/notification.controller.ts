@@ -9,7 +9,6 @@ export class ConsumerController {
   @EventPattern('order-created')
   async handleOrderCreated(@Payload() message: any, @Ctx() context: KafkaContext) {
     try {
-      // PERBAIKAN: Tidak perlu memeriksa message.value karena data langsung di message
       if (!message) {
         console.warn('Received empty message');
         return;
