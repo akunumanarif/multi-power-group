@@ -6,19 +6,14 @@ services:
     container_name: mpg-order-service
     ports:
       - "3001:3001"
-    environment:
-      - KAFKA_BROKER=kafka:9092
-      - DB_HOST=postgres  
-      - DB_PORT=5432      
-      - DB_USERNAME=postgres  
-      - DB_PASSWORD=postgres  
-      - DB_DATABASE=order_db  
-      - DB_SYNCHRONIZE=true
+    env_file:
+      - .env
     depends_on:
       - postgres
       - kafka
     networks:
       - app-network
+    restart: unless-stopped  
     logging:
       driver: json-file
       options:
@@ -33,10 +28,13 @@ services:
     container_name: mpg-notification-service
     ports:
       - "3002:3002"
+    env_file:
+      - .env
     depends_on:
       - kafka
     networks:
       - app-network
+    restart: unless-stopped  
     logging:
       driver: json-file
       options:
@@ -49,10 +47,8 @@ services:
     image: postgres:15
     container_name: mpg-postgres
     restart: always
-    environment:
-      POSTGRES_USER: postgres      
-      POSTGRES_PASSWORD: postgres   
-      POSTGRES_DB: order_db
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     volumes:
@@ -88,6 +84,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_LOG4J_ROOT_LOGLEVEL: "INFO"
+    restart: unless-stopped  
     networks:
     - app-network
 
@@ -100,9 +97,8 @@ services:
       - "9000:9000"
     environment:
       KAFKA_BROKERCONNECT: kafka:9092 
-      # KAFKA_PROPERTIES: "(bootstrap.servers=kafka:9092)"
-      # JVM_OPTS: "-Xms32M -Xmx64M -Dkafka.brokerConnect=kafka:9092"
       SERVER_SERVLET_CONTEXTPATH: "/"
+    restart: unless-stopped  
     networks:
       - app-network
 
@@ -114,6 +110,7 @@ services:
       - ES_JAVA_OPTS=-Xms1g -Xmx1g
     ports:
       - "9200:9200"
+    restart: unless-stopped  
     networks:
       - app-network
 
@@ -128,6 +125,7 @@ services:
       - LS_JAVA_OPTS=-Xmx256m -Xms256m
     depends_on:
       - elasticsearch
+    restart: unless-stopped  
     networks:
       - app-network
 
@@ -139,6 +137,7 @@ services:
       - "5601:5601"
     depends_on:
       - elasticsearch
+    restart: unless-stopped  
     networks:
       - app-network
 
@@ -152,6 +151,7 @@ services:
       - ./logs:/usr/share/filebeat/logs
     depends_on:
       - logstash
+    restart: unless-stopped  
     networks:
       - app-network    
 
