@@ -16,6 +16,8 @@ cd multi-power-group
 Create a `.env` file in the project root and in each service directory as needed.
 
 > **Note:** The required environment variables will be provided separately. Please copy the provided content into your `.env` files.
+>
+> **Tip:** The variable `EMAIL_CLIENT1` in your `.env` file is used as the recipient for notification emails. If you want to test email notifications, you can update the value of `EMAIL_CLIENT1` to your own email address.
 
 ### 3. Build and Start the System with Docker Compose
 
